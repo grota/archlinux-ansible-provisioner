@@ -13,10 +13,10 @@
     become_user: aur_builder
     when: enable_xorg_multitouch_gestures
 
-  - name: Enable gnome-shell-extension-x11gestures extensions (available after restarting)
-    dconf:
-      key: "/org/gnome/shell/enabled-extensions"
-      value: "{{ gnome_extensions + gnome_extensions_multitouch }}"
+  #- name: Enable gnome-shell-extension-x11gestures extensions (available after restarting)
+    #dconf:
+      #key: "/org/gnome/shell/enabled-extensions"
+      #value: "{{ gnome_extensions + gnome_extensions_multitouch }}"
 
   - name: debug
     debug:

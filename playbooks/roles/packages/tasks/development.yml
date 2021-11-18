@@ -5,11 +5,11 @@
     - name: Install cloud native packages
       community.general.pacman:
         name:
-          - aws-cli
+          #- aws-cli
           - yq
           - jq
           - kubectl
-          - k9s
+          #- k9s
           - helm
     - name: Install cloud native packages from aur
       kewlfft.aur.aur:
@@ -44,7 +44,7 @@
   - name: Install development packages
     community.general.pacman:
       name:
-        - nodejs-lts-gallium
+        #- nodejs-lts-gallium
         - npm
         - yarn
         - php

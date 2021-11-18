@@ -29,10 +29,10 @@
         key: "/org/gnome/desktop/interface/document-font-name"
         value: "'Ubuntu 12'"
 
-    - name: Set default monospace font
-      dconf:
-        key: "/org/gnome/desktop/interface/monospace-font-name"
-        value: "'IBM Plex Mono 12'"
+    #- name: Set default monospace font
+      #dconf:
+        #key: "/org/gnome/desktop/interface/monospace-font-name"
+        #value: "'IBM Plex Mono 12'"
 
     - name: Center new windows
       dconf:
@@ -49,10 +49,10 @@
         key: "/org/gnome/desktop/interface/clock-show-date"
         value: "true"
 
-    - name: Show seconds on clock
-      dconf:
-        key: "/org/gnome/desktop/interface/clock-show-seconds"
-        value: "true"
+    #- name: Show seconds on clock
+      #dconf:
+        #key: "/org/gnome/desktop/interface/clock-show-seconds"
+        #value: "true"
 
     - name: Show weekdays on calendar
       dconf:
@@ -69,15 +69,15 @@
         key: "/org/gnome/desktop/wm/preferences/num-workspaces"
         value: "4"
 
-    - name: Use workspaces on all monitors
-      dconf:
-        key: "/org/gnome/mutter/workspaces-only-on-primary"
-        value: "false"
+    #- name: Use workspaces on all monitors
+      #dconf:
+        #key: "/org/gnome/mutter/workspaces-only-on-primary"
+        #value: "false"
 
-    - name: Enable mouse natural scrool
-      dconf:
-        key: "/org/gnome/desktop/peripherals/mouse/natural-scroll"
-        value: "true"
+    #- name: Enable mouse natural scrool
+      #dconf:
+        #key: "/org/gnome/desktop/peripherals/mouse/natural-scroll"
+        #value: "true"
 
     - name: Disable hot corners
       dconf:
@@ -89,8 +89,8 @@
         key: "/org/gnome/desktop/wm/preferences/button-layout"
         value: "'appmenu:minimize,maximize,close'"
 
-    - name: Enable gnome-shell extensions (available after restarting)
-      dconf:
-        key: "/org/gnome/shell/enabled-extensions"
-        value: "{{ gnome_extensions }} + {{ gnome_extensions_multitouch }}"
+    #- name: Enable gnome-shell extensions (available after restarting)
+      #dconf:
+        #key: "/org/gnome/shell/enabled-extensions"
+        #value: "{{ gnome_extensions }} + {{ gnome_extensions_multitouch }}"
 

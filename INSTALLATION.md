@@ -83,14 +83,14 @@ Export the following variables, that we'll be used by next installation steps:
 
 ```shell
 export UEFI_PARTITION=/dev/nvme0n1p1
-export ROOT_PARTITION=/dev/nvme0n1p4
-export SWAP_PARTITION=/dev/nvme0n1p5
+export ROOT_PARTITION=/dev/nvme0n1p2
+export SWAP_PARTITION=/dev/nvme0n1p3
 export LUKS_PARTITION=/dev/mapper/cryptroot
 ```
 
 Just to be sure about the partitions, you can always run `lsblk` to see partitions per disk.
 
-> ***VERY IMPORTANT***: From now on i'll use `/dev/nvme0n1p4` for the root partition and `/dev/nvme0n1p5` and `/dev/nvme0n1p5` for the swap one. Adjust them according to your setup.
+> ***VERY IMPORTANT***: From now on i'll use `/dev/nvme0n1p4` for the root partition and `/dev/nvme0n1p5` for the swap one. Adjust them according to your setup.
 
 ### ROOT LUKS encryption (optional)
 
@@ -154,47 +154,6 @@ mkdir -p /mnt/mnt/allvolumes
 mount -o noatime,compress=zstd,subvol=/ ${LUKS_PARTITION} /mnt/mnt/allvolumes
 ```
 
-### BTRFS Setup without encryption
-
-We are going to create btrfs volumes and subvolumes:
-
-```
-mkfs.btrfs -L arch ${ROOT_PARTITION}
-mount ${ROOT_PARTITION} /mnt
-
-# This is a layout made to be compatible with timeshift and similare to the Manjaro one (https://www.reddit.com/r/archlinux/comments/fkcamq/comment/fks5mph/?utm_source=share&utm_medium=web2x&context=3)
-btrfs subvolume create /mnt/@
-btrfs subvolume create /mnt/@home
-btrfs subvolume create /mnt/@snapshots
-btrfs subvolume create /mnt/@home.snapshots
-```
-
-Next, create all the directories needed and mount all the partitions (/boot/efi included) in order to start the installation:
-
-```
-umount /mnt
-
-# Mount root and create default directories.
-mount -o noatime,compress=zstd,subvol=@ ${ROOT_PARTITION} /mnt
-
-# Mount boot partition.
-mkdir -p /mnt/boot/uefi
-mount ${UEFI_PARTITION} /mnt/boot/efi
-
-# Mount home.
-mkdir /mnt/home
-mount -o noatime,compress=zstd,subvol=@home ${ROOT_PARTITION} /mnt/home
-
-# Mount all subvolumes just for convenience.
-mkdir -p /mnt/mnt/allvolumes
-mount -o noatime,compress=zstd,subvol=/ ${ROOT_PARTITION} /mnt/mnt/allvolumes
-```
-
-> ***Please note*** that we are mounting btrfs with compression enabled to reduce writes (and ssd lifespan)
-and performance [here](https://wiki.archlinux.org/title/btrfs#Compression) and [here](https://fedoraproject.org/wiki/Changes/BtrfsByDefault#Compression) some refs.
-
-Done, we can now run the provisioner.
-
 ## Install Archlinux using the provisioner
 
 This Archlinux provisioner is not inteded bo a replacement of the Archlinux installation wiki (https://wiki.archlinux.org/title/installation_guide),
@@ -223,7 +182,7 @@ Start by cloning the repo:
 
 ```bash
 cd /root
-git clone https://github.com/paolomainardi/archlinux-ansible-provisioner.git provisioner
+git clone https://github.com/grota/archlinux-ansible-provisioner.git provisioner
 cd provisioner
 ```
 
@@ -245,7 +204,7 @@ CONFIG=./config/default.yaml make system
 ### Configure GRUB to the encrypted disk (only for encrypted installations)
 
 1. Run `vim /mnt/etc/mkinitcpio.conf` and, to the `HOOKS` array, add `keyboard` between `autodetect` and `modconf` and add `encrypt` between `block` and `filesystems`
-   * It should look like this: `HOOKS=(base udev autodetect keyboard modconf block encrypt filesystems keyboard fsck)`
+   * It should look like this: `HOOKS=(base udev autodetect keyboard modconf block encrypt filesystems fsck)`
 1. Run `arch-chroot /mnt mkinitcpio -P`
 1. Run `blkid -s UUID -o value ${ROOT_PARTITION}` to get the `UUID` of the device 
 1. Run `vim /mnt/etc/default/grub` and set `GRUB_CMDLINE_LINUX="cryptdevice=UUID=xxxx:cryptroot /dev/mapper/cryptroot"` while replacing `xxxx` with the `UUID` of the `$ROOT_PARTITION` device to tell GRUB about our encrypted file system.

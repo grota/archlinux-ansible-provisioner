@@ -39,7 +39,7 @@
         - zsh-completions
         - lshw
         - deja-dup
-        - vim
+        #- vim
 
   - name: System packges from aur
     kewlfft.aur.aur:

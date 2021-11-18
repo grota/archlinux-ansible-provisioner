@@ -46,14 +46,14 @@
 - name: Configure gnome
   import_tasks: dconf.yml
 
-- name: Configure dash-to-dock
-  import_tasks: dash-to-dock.yml
+#- name: Configure dash-to-dock
+  #import_tasks: dash-to-dock.yml
 
-- name: Configure just-perfection
-  import_tasks: just-perfection.yml
+#- name: Configure just-perfection
+  #import_tasks: just-perfection.yml
 
-- name: Configure gnome keybindings
-  import_tasks: keybindings.yml
+#- name: Configure gnome keybindings
+  #import_tasks: keybindings.yml
 
 - name: Configure multitouch gestures (x11)
   import_tasks: gestures.yml
